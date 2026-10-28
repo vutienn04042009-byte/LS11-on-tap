@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trò Chơi Ôn Tập Lịch Sử 11 - Giữa Học Kỳ I (GDPT 2018)</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Lexend', sans-serif;
+      background: radial-gradient(circle at top right, #f8fafc, #e2e8f0);
+      min-height: 100vh;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="text-slate-800 antialiased flex flex-col justify-between">
+
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-indigo-700 via-indigo-800 to-blue-900 text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="bg-white/10 p-2.5 rounded-xl backdrop-blur-md">
+          <i class="fa-solid fa-landmark text-2xl text-amber-300"></i>
+        </div>
+        <div>
+          <h1 class="text-lg md:text-xl font-bold tracking-tight">LỊCH SỬ 11 - ÔN TẬP GIỮA KỲ I</h1>
+          <p class="text-xs text-indigo-200 hidden sm:block">Chương trình GDPT 2018 • Chủ đề: Cách mạng tư sản & Chủ nghĩa tư bản</p>
+        </div>
+      </div>
+      <div id="header-stats" class="hidden items-center space-x-4">
+        <div class="bg-white/10 px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center space-x-1.5">
+          <i class="fa-regular fa-clock text-amber-300"></i>
+          <span id="timer">00:00</span>
+        </div>
+        <div class="bg-amber-400/20 text-amber-300 px-3 py-1.5 rounded-lg text-sm font-semibold border border-amber-300/30">
+          <i class="fa-solid fa-star mr-1"></i><span id="score-display">0</span> đ
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-grow max-w-6xl w-full mx-auto p-4 md:py-8">
+
+    <!-- START SCREEN -->
+    <div id="start-screen" class="bg-white rounded-2xl shadow-xl p-6 md:p-10 border border-slate-100 max-w-3xl mx-auto transition-all">
+      <div class="text-center mb-8">
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-indigo-100 text-indigo-700 mb-3">
+          Ngân hàng 50 câu trắc nghiệm chuẩn hóa
+        </span>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-3">
+          Đấu Trường Lịch Sử 11
+        </h2>
+        <p class="text-slate-600 text-sm md:text-base leading-relaxed">
+          Được biên soạn bám sát kiến thức giữa HK1 (Sự xác lập và mở rộng của CNTB, CNTB độc quyền và hiện đại). Hệ thống sẽ tự động <strong>xáo trộn ngẫu nhiên</strong> thứ tự câu hỏi và phương án trả lời ở mỗi lượt luyện tập!
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 text-center">
+          <i class="fa-solid fa-list-check text-indigo-600 text-2xl mb-2"></i>
+          <div class="font-bold text-slate-800">50 Câu Hỏi</div>
+          <div class="text-xs text-slate-500">Đầy đủ giải thích ngắn gọn</div>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 text-center">
+          <i class="fa-solid fa-shuffle text-emerald-600 text-2xl mb-2"></i>
+          <div class="font-bold text-slate-800">Đảo Ngẫu Nhiên</div>
+          <div class="text-xs text-slate-500">Tránh học vẹt vị trí đáp án</div>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80 text-center">
+          <i class="fa-solid fa-bolt text-amber-500 text-2xl mb-2"></i>
+          <div class="font-bold text-slate-800">Phản Hồi Tức Thì</div>
+          <div class="text-xs text-slate-500">Xem ngay đáp án & lời giải</div>
+        </div>
+      </div>
+
+      <!-- Mode selection -->
+      <div class="space-y-4 mb-8">
+        <label class="block text-sm font-semibold text-slate-700">Chọn chế độ làm bài:</label>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <button type="button" onclick="selectQuizMode('full')" id="mode-full-btn" class="border-2 border-indigo-600 bg-indigo-50/50 p-4 rounded-xl text-left flex items-start space-x-3 transition hover:border-indigo-600">
+            <i class="fa-solid fa-circle-check text-indigo-600 mt-1"></i>
+            <div>
+              <div class="font-bold text-slate-800 text-sm">Toàn bộ 50 câu</div>
+              <div class="text-xs text-slate-500">Ôn tập trọn vẹn toàn bộ ngân hàng câu hỏi.</div>
+            </div>
+          </button>
+          <button type="button" onclick="selectQuizMode('quick20')" id="mode-quick-btn" class="border-2 border-slate-200 hover:border-indigo-400 p-4 rounded-xl text-left flex items-start space-x-3 transition">
+            <i class="fa-regular fa-circle text-slate-400 mt-1"></i>
+            <div>
+              <div class="font-bold text-slate-800 text-sm">Thử thách 20 câu</div>
+              <div class="text-xs text-slate-500">Trích xuất ngẫu nhiên 20 câu để ôn thi tốc độ.</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button onclick="startQuiz()" class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-600/30 transform active:scale-95 transition">
+          <i class="fa-solid fa-play mr-2"></i> Bắt Đầu Làm Bài
+        </button>
+      </div>
+    </div>
+
+    <!-- QUIZ PLAY SCREEN -->
+    <div id="quiz-screen" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <!-- Left Column: Current Question Card -->
+      <div class="lg:col-span-2 space-y-4">
+        <!-- Progress Bar -->
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+          <div class="flex justify-between items-center text-xs font-semibold text-slate-600 mb-2">
+            <span>Tiến độ: <strong id="progress-text" class="text-indigo-600 font-bold">1/50</strong></span>
+            <span>Đã trả lời: <strong id="answered-count">0</strong></span>
+          </div>
+          <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+            <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-300" style="width: 2%;"></div>
+          </div>
+        </div>
+
+        <!-- Question Box -->
+        <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md border border-slate-200 min-h-[380px] flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span id="question-badge" class="px-3 py-1 bg-indigo-100 text-indigo-700 text-xs font-bold rounded-full">
+                Câu 1
+              </span>
+              <button onclick="toggleBookmarkCurrent()" id="bookmark-btn" class="text-slate-400 hover:text-amber-500 text-sm transition">
+                <i class="fa-regular fa-bookmark mr-1"></i> <span class="hidden sm:inline">Ghi nhớ</span>
+              </button>
+            </div>
+            <h3 id="question-content" class="text-base md:text-lg font-semibold text-slate-900 leading-relaxed mb-6">
+              Nội dung câu hỏi ở đây...
+            </h3>
+
+            <!-- Options Container -->
+            <div id="options-container" class="space-y-3">
+              <!-- Dynamically populated options -->
+            </div>
+          </div>
+
+          <!-- Explanation box -->
+          <div id="explanation-box" class="hidden mt-6 p-4 rounded-xl border transition-all text-sm leading-relaxed">
+            <div class="font-bold flex items-center mb-1.5" id="explanation-header">
+              <i class="fa-solid fa-circle-info mr-2"></i> Lời giải giáo viên:
+            </div>
+            <p id="explanation-text" class="text-slate-700"></p>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="flex items-center justify-between mt-8 pt-4 border-t border-slate-100">
+            <button onclick="prevQuestion()" id="prev-btn" class="px-4 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600 disabled:opacity-30 disabled:pointer-events-none transition flex items-center">
+              <i class="fa-solid fa-chevron-left mr-2"></i> Câu trước
+            </button>
+            <div class="space-x-2">
+              <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-md transition flex items-center">
+                Câu tiếp theo <i class="fa-solid fa-chevron-right ml-2"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Navigation Grid & Actions -->
+      <div class="lg:col-span-1 space-y-4">
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+          <div class="flex justify-between items-center mb-4">
+            <h4 class="font-bold text-slate-800 text-sm flex items-center">
+              <i class="fa-solid fa-border-all text-indigo-600 mr-2"></i> Danh Sách Câu Hỏi
+            </h4>
+            <span class="text-xs text-slate-500" id="total-grid-info">50 câu</span>
+          </div>
+
+          <div id="question-grid" class="grid grid-cols-5 gap-2 max-h-[360px] overflow-y-auto p-1 custom-scrollbar">
+            <!-- Grid numbers populated dynamically -->
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-100 space-y-2 text-xs">
+            <div class="flex items-center justify-between text-slate-600">
+              <span class="flex items-center"><span class="w-3 h-3 rounded bg-emerald-500 inline-block mr-1.5"></span> Đúng</span>
+              <span class="flex items-center"><span class="w-3 h-3 rounded bg-rose-500 inline-block mr-1.5"></span> Sai</span>
+              <span class="flex items-center"><span class="w-3 h-3 rounded bg-slate-200 inline-block mr-1.5"></span> Chưa làm</span>
+            </div>
+          </div>
+
+          <div class="mt-6">
+            <button onclick="finishQuizEarly()" class="w-full py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 font-semibold rounded-xl border border-rose-200 text-sm transition">
+              <i class="fa-solid fa-flag-checkered mr-1.5"></i> Nộp Bài & Xem Kết Quả
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div id="result-screen" class="hidden bg-white rounded-2xl shadow-xl p-6 md:p-10 border border-slate-100 max-w-3xl mx-auto">
+      <div class="text-center mb-8">
+        <div id="result-icon-container" class="w-20 h-20 mx-auto rounded-full flex items-center justify-center text-4xl mb-4">
+          <!-- Dynamic Trophy or Check -->
+        </div>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-2">Kết Quả Bài Làm</h2>
+        <p id="result-evaluation" class="text-slate-600 text-sm md:text-base font-medium">Nhận xét của giáo viên...</p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+        <div class="bg-indigo-50 border border-indigo-100 p-4 rounded-xl text-center">
+          <div class="text-2xl md:text-3xl font-extrabold text-indigo-700" id="res-score">10.0</div>
+          <div class="text-xs font-semibold text-indigo-600 uppercase mt-1">Điểm số (thang 10)</div>
+        </div>
+        <div class="bg-emerald-50 border border-emerald-100 p-4 rounded-xl text-center">
+          <div class="text-2xl md:text-3xl font-extrabold text-emerald-700" id="res-correct">0</div>
+          <div class="text-xs font-semibold text-emerald-600 uppercase mt-1">Số câu đúng</div>
+        </div>
+        <div class="bg-rose-50 border border-rose-100 p-4 rounded-xl text-center">
+          <div class="text-2xl md:text-3xl font-extrabold text-rose-700" id="res-wrong">0</div>
+          <div class="text-xs font-semibold text-rose-600 uppercase mt-1">Số câu sai</div>
+        </div>
+        <div class="bg-amber-50 border border-amber-100 p-4 rounded-xl text-center">
+          <div class="text-2xl md:text-3xl font-extrabold text-amber-700" id="res-time">00:00</div>
+          <div class="text-xs font-semibold text-amber-600 uppercase mt-1">Thời gian làm</div>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row justify-center gap-3">
+        <button onclick="reviewAnswers()" class="px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold rounded-xl text-sm transition">
+          <i class="fa-solid fa-magnifying-glass mr-2"></i> Xem Lại Chi Tiết
+        </button>
+        <button onclick="restartQuizWithShuffle()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm shadow-md shadow-indigo-600/30 transition">
+          <i class="fa-solid fa-rotate-right mr-2"></i> Xáo Trộn & Làm Lại
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-200/60 bg-white">
+    Thiết kế phục vụ học sinh ôn tập chuẩn kiến thức, kỹ năng Lịch sử 11 HK1 - Chương trình GDPT 2018.
+  </footer>
+
+  <!-- App Data and Scripts -->
+  <script>
+    // NGÂN HÀNG 50 CÂU HỎI GỐC (Kèm đáp án đúng chuẩn GDPT 2018 và giải thích giáo viên)
+    const originalQuestions = [
+      {
+        question: "Chính sách cai trị của nhà nước phong kiến về kinh tế đã",
+        options: [
+          "thúc đẩy kinh tế tư bản chủ nghĩa phát triển mạnh mẽ.",
+          "tạo ra rào cản đối với sự phát triển kinh tế tư bản chủ nghĩa.",
+          "hình thành thị trường dân tộc thống nhất ở các nước.",
+          "làm suy thoái và trầm trọng hơn các ngành kinh tế."
+        ],
+        correct: 1,
+        explanation: "Các chính sách thuế khóa nặng nề, duy trì phường hội phong kiến đã kìm hãm, tạo rào cản ngăn cản kinh tế tư bản chủ nghĩa phát triển."
+      },
+      {
+        question: "Nội dung nào sau đây là tiền đề về kinh tế dẫn đến sự bùng nổ và thắng lợi của các cuộc cách mạng tư sản từ giữa thế kỉ XVI đến đầu thế kỉ XX?",
+        options: [
+          "Quan hệ sản xuất tư bản chủ nghĩa thay thế quan hệ phong kiến.",
+          "Giai cấp tư sản và đồng minh có thế lực lớn cả về kinh tế và chính trị.",
+          "Những rào cản của chế độ phong kiến kìm hãm kinh tế tư bản chủ nghĩa.",
+          "Triết học Ánh sáng ra đời, dọn đường cho quần chúng đấu tranh."
+        ],
+        correct: 2,
+        explanation: "Sự phát triển của kinh tế TBCN mâu thuẫn sâu sắc với chế độ phong kiến lỗi thời, đặt ra yêu cầu phải xóa bỏ rào cản này."
+      },
+      {
+        question: "Mục tiêu đấu tranh của các cuộc cách mạng tư sản từ giữa thế kỉ XVI đến đầu thế kỉ XX là",
+        options: [
+          "xóa bỏ ách áp bức bóc lột của phong kiến, thực dân.",
+          "đưa giai cấp công nhân lên nắm chính quyền.",
+          "xóa bỏ triệt để những mâu thuẫn trong xã hội.",
+          "xác lập sự thống trị của chủ nghĩa thực dân."
+        ],
+        correct: 0,
+        explanation: "Cách mạng tư sản nhằm xóa bỏ ách thống trị phong kiến chuyên chế hoặc ách thống trị của thực dân để mở đường cho CNTB."
+      },
+      {
+        question: "Nội dung nào sau đây là tiền đề về chính trị dẫn đến sự bùng nổ và thắng lợi của các cuộc cách mạng tư sản từ giữa thế kỉ XVI đến đầu thế kỉ XX?",
+        options: [
+          "Quan hệ sản xuất tư bản chủ nghĩa thay thế hoàn toàn quan hệ phong kiến.",
+          "Giai cấp tư sản và đồng minh có thế lực rất lớn cả về kinh tế và chính trị.",
+          "Triết học Ánh sáng ra đời, thức tỉnh, dọn đường cho quần chúng đấu tranh.",
+          "Chế độ cai trị của nhà nước phong kiến, gây ra sự bất mãn trong xã hội."
+        ],
+        correct: 3,
+        explanation: "Sự khủng hoảng và chuyên chế của chế độ phong kiến làm gia tăng xung đột chính trị và bất mãn sâu sắc trong xã hội."
+      },
+      {
+        question: "Điểm chung trong tiền đề tư tưởng của các cuộc cách mạng tư sản thế kỉ XVII - XVIII là",
+        options: [
+          "Xuất hiện trào lưu tư tưởng tiến bộ của tư sản.",
+          "Xuất hiện trào lưu triết học ánh sáng.",
+          "Xuất hiện các giai cấp, tầng lớp xã hội mới.",
+          "Xuất hiện trào lưu xã hội không tưởng."
+        ],
+        correct: 0,
+        explanation: "Trước mỗi cuộc CMTS đều xuất hiện hệ tư tưởng tiến bộ dẫn đường cho giai cấp tư sản (Thanh giáo ở Anh, Triết học Ánh sáng ở Pháp)."
+      },
+      {
+        question: "Để thực hiện cuộc cách mạng tư sản (từ giữa thế kỉ XVI đến đầu thế kỉ XX) giai cấp tư sản và đồng minh đã làm gì?",
+        options: [
+          "Tìm cách tập hợp quần chúng nhân dân.",
+          "Thành lập quân đội riêng của mình.",
+          "Thỏa hiệp với quý tộc phong kiến.",
+          "Chọn giai cấp công nhân làm lực lượng nòng cốt."
+        ],
+        correct: 0,
+        explanation: "Giai cấp tư sản đã đề ra khẩu hiệu dân chủ, tự do, bình đẳng nhằm lôi kéo, tập hợp lực lượng quần chúng đông đảo tham gia cách mạng."
+      },
+      {
+        question: "Lực lượng lãnh đạo các cuộc cách mạng tư sản thời cận đại là",
+        options: [
+          "tư sản.",
+          "nông dân.",
+          "công nhân.",
+          "nô lệ."
+        ],
+        correct: 0,
+        explanation: "Giai cấp tư sản (hoặc liên minh tư sản với quý tộc mới/chủ nô) nắm ngọn cờ lãnh đạo cách mạng tư sản."
+      },
+      {
+        question: "Động lực của các cuộc cách mạng tư sản thời cận đại gồm các giai cấp, tầng lớp nào?",
+        options: [
+          "Nông dân, thợ thủ công, nô lệ.",
+          "Vua, nông dân, thợ thủ công.",
+          "Quan lại, nô lệ, thợ thủ công.",
+          "Lãnh chúa, nông dân, nô lệ."
+        ],
+        correct: 0,
+        explanation: "Quần chúng nhân dân lao động (nông dân, thợ thủ công, thị dân, nô lệ) là lực lượng đông đảo và là động lực chủ yếu của cách mạng."
+      },
+      {
+        question: "Các cuộc cách mạng tư sản thời cận đại nổ ra và giành thắng lợi trong khoảng thời gian",
+        options: [
+          "từ giữa thế kỷ XVI đến đầu thế kỷ XX.",
+          "từ cuối thế kỷ XVI đến đầu thế kỷ XIX.",
+          "từ giữa thế kỷ XV đến đầu thế kỷ XIX.",
+          "từ đầu thế kỷ XVI đến giữa thế kỷ XIX."
+        ],
+        correct: 0,
+        explanation: "Mở đầu là Cách mạng Nê-đéc-lan (giữa thế kỷ XVI) và kết thúc thời kỳ xác lập là CM Tân Hợi (1911) và CM Nga (1905-1907, 1917)."
+      },
+      {
+        question: "Đâu không phải là một trong những tiền đề của các cuộc cách mạng tư sản thời cận đại?",
+        options: [
+          "Kinh tế.",
+          "Quân sự.",
+          "Chính trị.",
+          "Tư tưởng."
+        ],
+        correct: 1,
+        explanation: "Bốn tiền đề cơ bản bùng nổ CMTS thời cận đại theo chương trình gồm: Kinh tế, Chính trị, Xã hội và Tư tưởng (quân sự không phải tiền đề)."
+      },
+      {
+        question: "Ở nước Anh, trước khi cách mạng tư sản bùng nổ, mọi quyền lực nằm trong tay của",
+        options: [
+          "quý tộc mới.",
+          "tư sản.",
+          "nhà vua.",
+          "nông dân."
+        ],
+        correct: 2,
+        explanation: "Trước cách mạng, nước Anh theo thể chế quân chủ chuyên chế dưới triều vua Sác-lơ I, vua nắm giữ quyền lực tối cao."
+      },
+      {
+        question: "Nội dung nào sau đây không phải là mục tiêu đấu tranh của các cuộc cách mạng tư sản từ giữa thế kỉ XVI đến đầu thế kỉ XX?",
+        options: [
+          "Xóa bỏ ách áp bức bóc lột của chế độ phong kiến, thực dân.",
+          "Mở đường cho tư bản chủ nghĩa phát triển.",
+          "Xóa bỏ triệt để những mâu thuẫn trong xã hội.",
+          "Xóa bỏ những rào cản kìm hãm sự phát triển của kinh tế tư bản chủ nghĩa."
+        ],
+        correct: 2,
+        explanation: "Cách mạng tư sản chỉ thay thế hình thức bóc lột này bằng hình thức bóc lột khác tinh vi hơn, không thể xóa bỏ triệt để mọi mâu thuẫn giai cấp."
+      },
+      {
+        question: "Nhiệm vụ cơ bản của các cuộc cách mạng tư sản thời cận đại là gì?",
+        options: [
+          "Dân tộc và dân sinh.",
+          "Độc lập và dân chủ.",
+          "Dân tộc và dân chủ.",
+          "Dân tộc và độc lập."
+        ],
+        correct: 2,
+        explanation: "Hai nhiệm vụ căn bản của mọi cuộc cách mạng tư sản là nhiệm vụ Dân tộc (độc lập, thống nhất thị trường) và Dân chủ (xóa bỏ chế độ độc tài chuyên chế, lập quyền dân chủ)."
+      },
+      {
+        question: "Chiến tranh giành độc lập của 13 thuộc địa Anh ở Bắc Mỹ diễn ra dưới hình thức nào?",
+        options: [
+          "Giải phóng dân tộc.",
+          "Nội chiến với Anh.",
+          "Giải phóng nô lệ.",
+          "Thống nhất dân tộc."
+        ],
+        correct: 0,
+        explanation: "Đây là cuộc chiến tranh lật đổ ách thống trị của thực dân Anh, giành độc lập và thành lập Hợp chúng quốc Hoa Kỳ (Mỹ)."
+      },
+      {
+        question: "Lực lượng nào lãnh đạo cách mạng tư sản Anh (1642-1688)?",
+        options: [
+          "Tư sản, quý tộc mới.",
+          "Quý tộc mới, chủ nô.",
+          "Tư sản, đại địa chủ.",
+          "Nông dân, công nhân."
+        ],
+        correct: 0,
+        explanation: "Ở Anh, sự liên minh giữa giai cấp tư sản và tầng lớp quý tộc mới (đứng đầu là Ô-li-vơ Crôm-oen) nắm quyền lãnh đạo."
+      },
+      {
+        question: "Động lực nào quyết định thắng lợi của các cuộc cách mạng tư sản thời cận đại?",
+        options: [
+          "Giai cấp lãnh đạo và quần chúng nhân dân.",
+          "Giai cấp lãnh đạo và những nhà tư tưởng.",
+          "Điều kiện lịch sử và các nhân tố khách quan.",
+          "Điều kiện lịch sử và các nhân tố chủ quan."
+        ],
+        correct: 0,
+        explanation: "Sự kết hợp giữa đường lối của giai cấp lãnh đạo và sức mạnh quật khởi của đông đảo quần chúng nhân dân là nhân tố quyết định thắng lợi."
+      },
+      {
+        question: "Một trong những kết quả của các cuộc cách mạng tư sản thời cận đại là",
+        options: [
+          "đã lật đổ chế độ quân chủ chuyên chế.",
+          "xóa bỏ mọi tàn tích chế độ phong kiến.",
+          "giải quyết mọi quyền lợi cho nông dân.",
+          "mở đường cho việc xâm lược thuộc địa."
+        ],
+        correct: 0,
+        explanation: "Các cuộc CMTS đã lật đổ nền quân chủ chuyên chế độc đoán, thiết lập chế độ quân chủ lập hiến hoặc cộng hòa tư sản."
+      },
+      {
+        question: "Thời cận đại, cuộc cách mạng tư sản nào có tính chất triệt để nhất?",
+        options: [
+          "Anh.",
+          "Pháp.",
+          "Nhật.",
+          "Nga."
+        ],
+        correct: 1,
+        explanation: "Cách mạng tư sản Pháp 1789 được đánh giá là triệt để nhất vì lật đổ hoàn toàn phong kiến, giải quyết vấn đề ruộng đất cho nông dân ở thời kỳ Giacôbanh."
+      },
+      {
+        question: "Vì sao cách mạng tư sản Pháp 1789 được đánh giá là cuộc cách mạng triệt để nhất thời kỳ cận đại?",
+        options: [
+          "Thiết lập chế độ quân chủ lập hiến khi cách mạng thắng lợi.",
+          "Xóa bỏ được giai cấp bóc lột, đưa nhân dân làm chủ đất nước.",
+          "Xác lập địa vị thống trị của nước Pháp về kinh tế và chính trị.",
+          "Vì giải quyết được đầy đủ các nhiệm vụ của cách mạng tư sản."
+        ],
+        correct: 3,
+        explanation: "CMTS Pháp lật đổ tận gốc rễ chế độ phong kiến, giải quyết ruộng đất cho nông dân và thiết lập nền cộng hòa dân chủ."
+      },
+      {
+        question: "Đâu là nguyên nhân sâu xa dẫn tới sự bùng nổ của các cuộc cách mạng tư sản thời cận đại?",
+        options: [
+          "Chế độ phong kiến mâu thuẫn với giai cấp tư sản.",
+          "Mâu thuẫn gay gắt giữa nhà vua với các địa chủ.",
+          "Sự xung đột giữa các tôn giáo lớn ở Anh và Pháp.",
+          "Trào lưu Triết học Ánh sáng đã được phổ biến."
+        ],
+        correct: 0,
+        explanation: "Nguyên nhân sâu xa là sự mâu thuẫn gay gắt giữa lực lượng sản xuất tư bản chủ nghĩa mới với quan hệ sản xuất phong kiến lỗi thời bảo thủ."
+      },
+      {
+        question: "Tính chất của các cuộc cách mạng tư sản Anh, chiến tranh giành độc lập ở 13 thuộc địa Anh ở Bắc Mỹ có điểm giống nhau là",
+        options: [
+          "đều do liên minh tư sản và quý tộc mới lãnh đạo.",
+          "đều đánh bại chủ nghĩa thực dân giành độc lập.",
+          "đều là các cuộc cách mạng tư sản chưa triệt để.",
+          "sau cách mạng thể chế quân chủ lập hiến ra đời."
+        ],
+        correct: 2,
+        explanation: "Cả hai cuộc CMTS này đều chưa triệt để: Anh không giải quyết ruộng đất cho nông dân; Bắc Mỹ không xóa bỏ chế độ nô lệ da đen."
+      },
+      {
+        question: "Triết học Ánh sáng có vai trò như thế nào đối với cách mạng tư sản Pháp 1789?",
+        options: [
+          "Dọn đường cho cách mạng bùng nổ.",
+          "Công kích chế độ tư bản chủ nghĩa.",
+          "Bênh vực những người dân lao động.",
+          "Đề cao chế độ phong kiến châu Âu."
+        ],
+        correct: 0,
+        explanation: "Triết học Ánh sáng (Mông-te-xki-ơ, Vôn-te, Rút-xô) phê phán chế độ phong kiến, khai sáng tư tưởng và dọn đường về mặt lý luận cho CM bùng nổ."
+      },
+      {
+        question: "Kết quả chung nhất của các cuộc cách mạng tư sản nổ ra và giành thắng lợi từ giữa thế kỉ XVI đến đầu thế kỉ XX?",
+        options: [
+          "Mở đường cho chủ nghĩa tư bản phát triển.",
+          "Lật đổ nền quân chủ chuyên chế.",
+          "Giành được nền độc lập dân tộc.",
+          "Thống nhất lãnh thổ thành một quốc gia."
+        ],
+        correct: 0,
+        explanation: "Kết quả cốt lõi của tất cả các cuộc cách mạng tư sản là dọn sạch các trở ngại để kinh tế và xã hội TBCN phát triển mạnh mẽ."
+      },
+      {
+        question: "Điểm khác nhau giữa cuộc Chiến tranh giành độc lập của 13 thuộc địa Anh ở Bắc Mĩ cuối thế kỷ XVIII với cuộc cách mạng tư sản Anh là gì?",
+        options: [
+          "Động lực cách mạng là quần chúng nhân dân.",
+          "Là cuộc chiến tranh giải phóng dân tộc.",
+          "Giai cấp tư sản tham gia lãnh đạo cách mạng.",
+          "Diễn ra dưới hình thức thống nhất đất nước."
+        ],
+        correct: 1,
+        explanation: "Chiến tranh ở Bắc Mỹ là cuộc đấu tranh giải phóng dân tộc chống lại mẫu quốc Anh, trong khi ở Anh là cuộc nội chiến chống chế độ chuyên chế trong nước."
+      },
+      {
+        question: "Cuộc Chiến tranh giành độc lập của 13 thuộc địa Anh ở Bắc Mĩ (cuối thế kỷ XVIII) và cuộc cách mạng tư sản Anh (thế kỷ XVII) có điểm giống nhau nào sau đây?",
+        options: [
+          "Chống thực dân Anh, giành độc lập dân tộc.",
+          "Mở đường cho chủ nghĩa tư bản phát triển.",
+          "Có sự lãnh đạo của tầng lớp quý tộc mới.",
+          "Diễn ra dưới hình thức một cuộc nội chiến."
+        ],
+        correct: 1,
+        explanation: "Cả hai cuộc cách mạng đều xóa bỏ những ách thống trị kìm hãm để mở đường cho quan hệ sản xuất TBCN phát triển tự do."
+      },
+      {
+        question: "Cuộc cách mạng nào sau đây được xem là cuộc cách mạng tư sản đầu tiên trên thế giới?",
+        options: [
+          "Cách mạng tư sản Anh.",
+          "Cách mạng tư sản Pháp.",
+          "Cách mạng Hà Lan (Nê-đéc-lan).",
+          "Cuộc đấu tranh thống nhất nước Đức."
+        ],
+        correct: 2,
+        explanation: "Cách mạng Nê-đéc-lan thế kỷ XVI (chống lại ách thống trị của phong kiến Tây Ban Nha) được xem là cuộc CMTS đầu tiên."
+      },
+      {
+        question: "Cuộc cách mạng nào sau đây đánh dấu chủ nghĩa tư bản được mở rộng ra ngoài phạm vi châu Âu?",
+        options: [
+          "Cách mạng tư sản Anh.",
+          "Cách mạng tư sản Pháp.",
+          "Chiến tranh giành độc lập của 13 thuộc địa Anh ở Bắc Mỹ.",
+          "Cách mạng tư sản Hà Lan."
+        ],
+        correct: 2,
+        explanation: "Thắng lợi của Chiến tranh giành độc lập ở 13 thuộc địa Anh ở Bắc Mỹ đã mở rộng địa bàn của CNTB sang châu Mỹ."
+      },
+      {
+        question: "Nguyên nhân dẫn đến nhu cầu ngày càng cao về nguyên liệu và nhân công ở các nước từ cuối thế kỉ XIX đến đầu thế kỉ XX?",
+        options: [
+          "sự phát triển nhanh chóng của chủ nghĩa tư bản.",
+          "sự phát triển nhanh chóng của chế độ phong kiến chuyên chế.",
+          "chiến tranh xâm lược và mở rộng lãnh thổ của chủ nghĩa thực dân.",
+          "chủ nghĩa đế quốc phát triển tới đỉnh cao của nó."
+        ],
+        correct: 0,
+        explanation: "Kinh tế công nghiệp tư bản phát triển với quy mô sản xuất khổng lồ đòi hỏi nguồn nguyên liệu dồi dào và thị trường nhân công rộng lớn."
+      },
+      {
+        question: "Từ đầu thế kỉ XIX, để tìm kiếm thị trường, thu lợi nhuận và đầu tư tư bản ở nước ngoài, các nước phương Tây đã thực hiện chính sách gì?",
+        options: [
+          "Đầu tư, phát triển khoa học - kỹ thuật.",
+          "Phát triển thị trường dân tộc thống nhất.",
+          "Củng cố bộ máy chính quyền, tăng cường bóc lột.",
+          "Chính sách xâm lược, mở rộng thuộc địa."
+        ],
+        correct: 3,
+        explanation: "Các nước đế quốc phương Tây đẩy mạnh xâm lược vũ trang nhằm biến các nước Á, Phi, Mỹ Latinh thành thuộc địa."
+      },
+      {
+        question: "Cuối thế kỉ XIX - đầu thế kỉ XX, các nước tư bản chuyển sang giai đoạn nào sau đây?",
+        options: [
+          "Tự do cạnh tranh.",
+          "Chủ nghĩa tư bản hiện đại.",
+          "Chủ nghĩa dân tộc cực đoan.",
+          "Đế quốc chủ nghĩa."
+        ],
+        correct: 3,
+        explanation: "Sự tập trung sản xuất và tích tụ tư bản dẫn đến việc hình thành các tổ chức độc quyền, chuyển CNTB sang giai đoạn đế quốc chủ nghĩa."
+      },
+      {
+        question: "Chủ nghĩa đế quốc tiến hành xâm lược thuộc địa nhằm mục đích nào sau đây?",
+        options: [
+          "Tìm kiếm thị trường, thu lợi nhuận và đầu tư tư bản ở nước ngoài.",
+          "Giúp đỡ kinh tế và khai hóa văn minh cho các nước chậm phát triển.",
+          "Di dân sang các nước chậm phát triển, giải quyết khủng hoảng dân số.",
+          "Thúc đẩy sự giao lưu kinh tế và văn hóa giữa các quốc gia, dân tộc."
+        ],
+        correct: 0,
+        explanation: "Thuộc địa là nơi cung cấp nguyên liệu rẻ mạt, tiêu thụ hàng hóa dư thừa và là nơi đầu tư xuất khẩu tư bản siêu lợi nhuận."
+      },
+      {
+        question: "Cho đến cuối thế kỉ XIX, các nước đế quốc đã thiết lập hệ thống thuộc địa rộng khắp ở các khu vực nào sau đây?",
+        options: [
+          "Châu Âu, châu Á và khu vực Nam Mỹ.",
+          "Châu Âu, châu Phi và khu vực Bắc Mỹ.",
+          "Châu Á, châu Phi và khu vực Mỹ La-tinh.",
+          "Châu Á, Tây Âu và khu vực Đông Âu."
+        ],
+        correct: 2,
+        explanation: "Hầu hết các quốc gia ở Châu Á, Châu Phi và khu vực Mỹ La-tinh đều bị biến thành thuộc địa hoặc phụ thuộc của các nước đế quốc."
+      },
+      {
+        question: "“Đế quốc mà Mặt Trời không bao giờ lặn” nói về hệ thống thuộc địa rộng lớn của quốc gia nào sau đây?",
+        options: [
+          "Nhật Bản.",
+          "Pháp.",
+          "Anh.",
+          "Tây Ban Nha."
+        ],
+        correct: 2,
+        explanation: "Đến đầu thế kỷ XX, đế quốc Anh sở hữu hệ thống thuộc địa trải khắp các châu lục với diện tích chiếm 1/4 diện tích lục địa toàn cầu."
+      },
+      {
+        question: "Đầu thế kỷ XX, hệ thống thuộc địa của chủ nghĩa thực dân không được thiết lập ở",
+        options: [
+          "châu Á.",
+          "châu Phi.",
+          "châu Âu.",
+          "châu Mỹ."
+        ],
+        correct: 2,
+        explanation: "Châu Âu là trung tâm phát tích của các nước đế quốc mẫu quốc, hệ thống thuộc địa được thiết lập tại Á, Phi và Mỹ Latinh."
+      },
+      {
+        question: "Thế kỷ XIX, hai quốc gia không bị biến thành thuộc địa ở châu Á là",
+        options: [
+          "Nhật Bản và Ấn Độ.",
+          "Nhật Bản và Xiêm.",
+          "Triều Tiên và Hàn Quốc.",
+          "Việt Nam và Trung Quốc."
+        ],
+        correct: 1,
+        explanation: "Nhờ canh tân Minh Trị (Nhật Bản) và chính sách ngoại giao khôn khéo của vua Rama V (Xiêm - Thái Lan), hai nước này vẫn giữ được nền độc lập."
+      },
+      {
+        question: "Từ nửa sau thế kỉ XIX, Nhật Bản tránh được nguy cơ xâm lược của thực dân phương Tây là do",
+        options: [
+          "liên minh quân sự với các nước tư bản lớn.",
+          "tiến hành cải cách đất nước trên nhiều lĩnh vực.",
+          "tiến hành cuộc nội chiến lật đổ phong kiến.",
+          "sự giúp đỡ của các nước tư bản phương Tây."
+        ],
+        correct: 1,
+        explanation: "Cuộc Duy tân Minh Trị (bắt đầu năm 1868) cải cách toàn diện về chính trị, kinh tế, quân sự, giáo dục giúp Nhật Bản phát triển hùng mạnh."
+      },
+      {
+        question: "Một trong những ý nghĩa của cách mạng Tân Hợi ở Trung Quốc (năm 1911) là",
+        options: [
+          "mở đường cho chủ nghĩa tư bản phát triển.",
+          "chấm dứt sự thống trị của các nước đế quốc ở Trung Quốc.",
+          "xóa bỏ triệt để quan hệ bóc lột địa chủ phong kiến.",
+          "thiết lập quyền làm chủ cho toàn thể giai cấp vô sản."
+        ],
+        correct: 0,
+        explanation: "Cách mạng Tân Hợi lật đổ triều Mãn Thanh, chấm dứt chế độ quân chủ chuyên chế tồn tại hàng ngàn năm, mở đường cho CNTB phát triển."
+      },
+      {
+        question: "Chủ nghĩa tư bản mở rộng phạm vi ảnh hưởng trên toàn thế giới từ",
+        options: [
+          "cuối thế kỷ XIX đầu thế kỷ XX.",
+          "cuối thế kỷ XVII đầu thế kỷ XX.",
+          "đầu thế kỷ XIX đầu thế kỷ XX.",
+          "giữa thế kỷ XIX đầu thế kỷ XX."
+        ],
+        correct: 0,
+        explanation: "Vào thời điểm cuối thế kỉ XIX - đầu thế kỉ XX, các đế quốc đã hoàn thành phân chia thuộc địa, CNTB xác lập hệ thống toàn cầu."
+      },
+      {
+        question: "Cuộc Cách mạng Tân Hợi ở Trung Quốc (năm 1911) đã góp phần mở rộng",
+        options: [
+          "chế độ phong kiến ở khu vực châu Á.",
+          "chủ nghĩa tư bản ở khu vực châu Á.",
+          "chế độ phong kiến ở khu vực Mỹ La-tinh.",
+          "chủ nghĩa tư bản ở khu vực Mỹ La-tinh."
+        ],
+        correct: 1,
+        explanation: "Đây là một cuộc cách mạng dân chủ tư sản, góp phần mở rộng ảnh hưởng của chủ nghĩa tư bản sang khu vực châu Á."
+      },
+      {
+        question: "Nguyên nhân thúc đẩy nền kinh tế tư bản chủ nghĩa phát triển mạnh mẽ từ cuối thế kỉ XIX – đầu thế kỉ XX là",
+        options: [
+          "các nước thuộc địa đã giành được độc lập.",
+          "đời sống của nhân dân ngày càng được cải thiện.",
+          "áp dụng nhiều thành tựu khoa học - kĩ thuật vào sản xuất.",
+          "tình hình chính trị - xã hội ở các nước ổn định."
+        ],
+        correct: 2,
+        explanation: "Cuộc cách mạng công nghiệp lần thứ hai với nhiều phát minh vượt bậc (điện, luyện kim, động cơ đốt trong) thúc đẩy nền sản xuất nhảy vọt."
+      },
+      {
+        question: "Chủ nghĩa tư bản chuyển từ tự do cạnh tranh sang giai đoạn độc quyền vào thời gian nào?",
+        options: [
+          "Cuối thế kỉ XVII - đầu thế kỉ XVIII.",
+          "Cuối thế kỉ XVIII - đầu thế kỉ XIX.",
+          "Cuối thế kỉ XIX - đầu thế kỉ XX.",
+          "Cuối thế kỉ XX - đầu thế kỉ XXI."
+        ],
+        correct: 2,
+        explanation: "Giai đoạn chuyển biến từ tự do cạnh tranh sang chủ nghĩa tư bản độc quyền (đế quốc chủ nghĩa) diễn ra vào cuối thế kỉ XIX - đầu thế kỉ XX."
+      },
+      {
+        question: "Tổ chức độc quyền là gì?",
+        options: [
+          "Sự liên minh kinh tế giữa các quốc gia.",
+          "Sự liên minh kinh tế giữa các châu lục.",
+          "Sự liên minh giữa các công ty vừa và nhỏ.",
+          "Sự liên minh giữa các nhà tư bản lớn."
+        ],
+        correct: 3,
+        explanation: "Tổ chức độc quyền là sự liên minh giữa các nhà tư bản lớn để tập trung vào tay mình phần lớn việc sản xuất và tiêu thụ hàng hóa nhằm thu lợi nhuận cao."
+      },
+      {
+        question: "Mục đích hướng tới của các tổ chức độc quyền (cuối thế kỉ XIX – đầu thế kỉ XX) là",
+        options: [
+          "chi phối quyền lực về chính trị.",
+          "nâng cao mức sống của người dân.",
+          "phát triển kinh tế - xã hội quốc gia.",
+          "thu lợi nhuận cao nhất."
+        ],
+        correct: 3,
+        explanation: "Mục đích tối cao và chi phối mọi hoạt động của các tổ chức độc quyền là thu lợi nhuận độc quyền cao nhất."
+      },
+      {
+        question: "Các hình thức của tổ chức độc quyền ở Đức và Pháp (ra đời từ cuối thế kỉ XIX đầu thế kỉ XX) có tên gọi là",
+        options: [
+          "Tơ-rớt, Dai-bát-xư.",
+          "Các-ten, Xanh-đi-ca.",
+          "Con-sen, Tơ-rớt.",
+          "Dai-bát-xư, Con-sen."
+        ],
+        correct: 1,
+        explanation: "Các hình thức độc quyền phổ biến ở Đức và Pháp là Các-ten (Cartel) và Xanh-đi-ca (Syndicat); trong khi ở Mỹ là Tơ-rớt (Trust)."
+      },
+      {
+        question: "Sự khác biệt cơ bản của chủ nghĩa tư bản tự do cạnh tranh và chủ nghĩa tư bản độc quyền là",
+        options: [
+          "sự phát triển các lĩnh vực sản xuất.",
+          "sự cạnh tranh về vốn lẫn nhau.",
+          "sự phân chia thị trường và thuộc địa.",
+          "sự tập trung tư bản và sản xuất."
+        ],
+        correct: 3,
+        explanation: "Đặc trưng lớn nhất của CNTB độc quyền so với tự do cạnh tranh là sự tích tụ và tập trung sản xuất, tích tụ tư bản ở mức độ rất cao hình thành tổ chức độc quyền."
+      },
+      {
+        question: "Giai đoạn phát triển của chủ nghĩa tư bản từ sau Chiến tranh thế giới thứ hai đến nay gọi là gì?",
+        options: [
+          "Chủ nghĩa tư bản tự do cạnh tranh.",
+          "Chủ nghĩa tư bản hiện đại.",
+          "Kinh tế tư bản tư nhân.",
+          "Chủ nghĩa tư bản độc quyền đơn thuần."
+        ],
+        correct: 1,
+        explanation: "Thuật ngữ 'Chủ nghĩa tư bản hiện đại' dùng để chỉ giai đoạn phát triển mới của CNTB từ sau Chiến tranh thế giới thứ hai đến nay."
+      },
+      {
+        question: "Sức sản xuất phát triển cao của chủ nghĩa tư bản hiện đại dựa trên cơ sở là",
+        options: [
+          "sự phát triển của kĩ thuật trong sản xuất hàng hóa.",
+          "lực lượng lao động đáp ứng sự nhảy vọt của nền sản xuất.",
+          "quản lý và điều tiết kinh tế của nhà nước tư bản.",
+          "sự phong phú và đa dạng của nguồn nguyên nhiên liệu."
+        ],
+        correct: 0,
+        explanation: "CNTB hiện đại phát triển dựa trên việc ứng dụng nhanh chóng các thành tựu của cuộc cách mạng khoa học - công nghệ hiện đại vào nền sản xuất."
+      },
+      {
+        question: "Tiềm năng phát triển của chủ nghĩa tư bản hiện đại được biểu hiện thông qua lĩnh vực nào sau đây?",
+        options: [
+          "Quân sự, văn hóa.",
+          "Văn hóa – giáo dục.",
+          "Chính trị, ngoại giao.",
+          "Khoa học – công nghệ."
+        ],
+        correct: 3,
+        explanation: "Các nước tư bản phát triển hiện nay nắm giữ tiềm lực tài chính và trình độ khoa học - công nghệ, đổi mới sáng tạo hàng đầu thế giới."
+      },
+      {
+        question: "Thách thức mà chủ nghĩa tư bản hiện đại phải đối mặt và khó có thể giải quyết hiện nay là",
+        options: [
+          "sự phát triển mạnh mẽ của khoa học – công nghệ.",
+          "sự sáp nhập của các công ty độc quyền lũng đoạn.",
+          "sự vươn lên mạnh mẽ của các nước đang phát triển.",
+          "khủng hoảng kinh tế, tài chính mang tính toàn cầu."
+        ],
+        correct: 3,
+        explanation: "Các cuộc khủng hoảng kinh tế, tài chính mang tính chu kỳ và toàn cầu, cùng tình trạng phân hóa giàu nghèo sâu sắc là nan đề cơ bản của CNTB hiện đại."
+      },
+      {
+        question: "Nội dung nào sau đây phản ánh đúng về bản chất chủ nghĩa tư bản hiện đại?",
+        options: [
+          "Luôn tìm cách xóa bỏ sự chênh lệch giàu nghèo và những bất công xã hội.",
+          "Theo đuổi lợi nhuận là mục tiêu cao nhất và cuối cùng của các nhà tư bản.",
+          "Đầu tư, hợp tác nhằm mục tiêu thúc đẩy sự phát triển kinh tế toàn cầu.",
+          "Không ngừng đấu tranh đòi quyền lợi chính đáng cho người lao động."
+        ],
+        correct: 1,
+        explanation: "Dù có những điều chỉnh về chính sách xã hội, bản chất cốt lõi của CNTB vẫn là bóc lột sức lao động và tối đa hóa lợi nhuận cho giới tư bản."
+      }
+    ];
+
+    // Trạng thái của phiên làm bài
+    let quizMode = 'full'; // 'full' (50 câu) hoặc 'quick20' (20 câu)
+    let currentQuestions = [];
+    let currentIndex = 0;
+    let userAnswers = {}; // { questionIndex: chosenOptionIndex }
+    let bookmarks = new Set();
+    let timerInterval = null;
+    let secondsElapsed = 0;
+
+    // Hàm xáo trộn mảng chuẩn Fisher-Yates
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // Chuẩn bị câu hỏi: Đảo ngẫu nhiên thứ tự câu hỏi VÀ các phương án A, B, C, D
+    function prepareQuizData() {
+      let pool = [...originalQuestions];
+      pool = shuffleArray(pool);
+
+      if (quizMode === 'quick20') {
+        pool = pool.slice(0, 20);
+      }
+
+      currentQuestions = pool.map(item => {
+        // Tạo cặp (nội dung, có phải đáp án đúng không)
+        const pairedOptions = item.options.map((opt, idx) => ({
+          text: opt,
+          isCorrect: idx === item.correct
+        }));
+
+        // Đảo ngẫu nhiên các phương án
+        const shuffledPairs = shuffleArray(pairedOptions);
+        const newCorrectIdx = shuffledPairs.findIndex(p => p.isCorrect);
+
+        return {
+          question: item.question,
+          options: shuffledPairs.map(p => p.text),
+          correct: newCorrectIdx,
+          explanation: item.explanation
+        };
+      });
+    }
+
+    function selectQuizMode(mode) {
+      quizMode = mode;
+      const fullBtn = document.getElementById('mode-full-btn');
+      const quickBtn = document.getElementById('mode-quick-btn');
+
+      if (mode === 'full') {
+        fullBtn.className = "border-2 border-indigo-600 bg-indigo-50/50 p-4 rounded-xl text-left flex items-start space-x-3 transition";
+        fullBtn.querySelector('i').className = "fa-solid fa-circle-check text-indigo-600 mt-1";
+        quickBtn.className = "border-2 border-slate-200 hover:border-indigo-400 p-4 rounded-xl text-left flex items-start space-x-3 transition";
+        quickBtn.querySelector('i').className = "fa-regular fa-circle text-slate-400 mt-1";
+      } else {
+        quickBtn.className = "border-2 border-indigo-600 bg-indigo-50/50 p-4 rounded-xl text-left flex items-start space-x-3 transition";
+        quickBtn.querySelector('i').className = "fa-solid fa-circle-check text-indigo-600 mt-1";
+        fullBtn.className = "border-2 border-slate-200 hover:border-indigo-400 p-4 rounded-xl text-left flex items-start space-x-3 transition";
+        fullBtn.querySelector('i').className = "fa-regular fa-circle text-slate-400 mt-1";
+      }
+    }
+
+    function startQuiz() {
+      prepareQuizData();
+      currentIndex = 0;
+      userAnswers = {};
+      bookmarks.clear();
+      secondsElapsed = 0;
+
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('quiz-screen').classList.remove('hidden');
+      document.getElementById('header-stats').classList.remove('hidden');
+      document.getElementById('header-stats').classList.add('flex');
+
+      document.getElementById('total-grid-info').innerText = `${currentQuestions.length} câu`;
+
+      startTimer();
+      renderNavigationGrid();
+      renderCurrentQuestion();
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      const timerEl = document.getElementById('timer');
+      timerInterval = setInterval(() => {
+        secondsElapsed++;
+        const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
+        const secs = String(secondsElapsed % 60).padStart(2, '0');
+        timerEl.innerText = `${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function formatTime(totalSecs) {
+      const mins = String(Math.floor(totalSecs / 60)).padStart(2, '0');
+      const secs = String(totalSecs % 60).padStart(2, '0');
+      return `${mins}:${secs}`;
+    }
+
+    function renderCurrentQuestion() {
+      const q = currentQuestions[currentIndex];
+      const total = currentQuestions.length;
+
+      // Update progress
+      document.getElementById('question-badge').innerText = `Câu ${currentIndex + 1}`;
+      document.getElementById('progress-text').innerText = `${currentIndex + 1}/${total}`;
+      const percent = ((currentIndex + 1) / total) * 100;
+      document.getElementById('progress-bar').style.width = `${percent}%`;
+
+      // Question text
+      document.getElementById('question-content').innerText = q.question;
+
+      // Options
+      const letters = ['A', 'B', 'C', 'D'];
+      const container = document.getElementById('options-container');
+      container.innerHTML = '';
+
+      const isAnswered = userAnswers[currentIndex] !== undefined;
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `w-full text-left p-3.5 md:p-4 rounded-xl border text-sm md:text-base font-normal flex items-start space-x-3 transition-all duration-200`;
+
+        let letterBg = 'bg-slate-100 text-slate-700 border-slate-300';
+        let optionStateClass = 'border-slate-200 hover:border-indigo-400 hover:bg-slate-50/80 text-slate-800';
+
+        if (isAnswered) {
+          const chosen = userAnswers[currentIndex];
+          if (idx === q.correct) {
+            // Đúng
+            optionStateClass = 'border-emerald-500 bg-emerald-50 text-emerald-950 font-medium shadow-sm';
+            letterBg = 'bg-emerald-500 text-white border-emerald-500';
+          } else if (idx === chosen) {
+            // Đã chọn sai
+            optionStateClass = 'border-rose-400 bg-rose-50 text-rose-950';
+            letterBg = 'bg-rose-500 text-white border-rose-500';
+          } else {
+            // Không được chọn
+            optionStateClass = 'opacity-60 border-slate-200 text-slate-500';
+          }
+        }
+
+        btn.className += ` ${optionStateClass}`;
+        btn.innerHTML = `
+          <span class="w-7 h-7 flex-shrink-0 flex items-center justify-center rounded-lg border font-bold text-xs ${letterBg}">
+            ${letters[idx]}
+          </span>
+          <span class="flex-grow pt-0.5">${opt}</span>
+        `;
+
+        if (!isAnswered) {
+          btn.onclick = () => selectOption(idx);
+        } else {
+          btn.disabled = true;
+        }
+
+        container.appendChild(btn);
+      });
+
+      // Explanation box
+      const expBox = document.getElementById('explanation-box');
+      if (isAnswered) {
+        expBox.classList.remove('hidden');
+        const isUserCorrect = userAnswers[currentIndex] === q.correct;
+        const header = document.getElementById('explanation-header');
+
+        if (isUserCorrect) {
+          expBox.className = 'mt-6 p-4 rounded-xl border bg-emerald-50/80 border-emerald-200 text-sm leading-relaxed';
+          header.className = 'font-bold flex items-center mb-1 text-emerald-800';
+          header.innerHTML = '<i class="fa-solid fa-circle-check mr-2"></i> Chính xác! Lời giải giáo viên:';
+        } else {
+          expBox.className = 'mt-6 p-4 rounded-xl border bg-rose-50/80 border-rose-200 text-sm leading-relaxed';
+          header.className = 'font-bold flex items-center mb-1 text-rose-800';
+          header.innerHTML = '<i class="fa-solid fa-circle-xmark mr-2"></i> Chưa chính xác! Lời giải giáo viên:';
+        }
+        document.getElementById('explanation-text').innerText = q.explanation;
+      } else {
+        expBox.classList.add('hidden');
+      }
+
+      // Prev & Next Buttons
+      document.getElementById('prev-btn').disabled = currentIndex === 0;
+      const nextBtn = document.getElementById('next-btn');
+      if (currentIndex === total - 1) {
+        nextBtn.innerHTML = 'Hoàn thành <i class="fa-solid fa-check ml-2"></i>';
+      } else {
+        nextBtn.innerHTML = 'Câu tiếp theo <i class="fa-solid fa-chevron-right ml-2"></i>';
+      }
+
+      // Bookmark button style
+      updateBookmarkIcon();
+      updateScoreDisplay();
+    }
+
+    function selectOption(chosenIdx) {
+      if (userAnswers[currentIndex] !== undefined) return;
+
+      userAnswers[currentIndex] = chosenIdx;
+
+      // Update grid status
+      const btnGrid = document.getElementById(`grid-btn-${currentIndex}`);
+      if (btnGrid) {
+        if (chosenIdx === currentQuestions[currentIndex].correct) {
+          btnGrid.className = 'w-full aspect-square text-xs font-bold rounded-lg flex items-center justify-center transition bg-emerald-500 text-white shadow-sm';
+        } else {
+          btnGrid.className = 'w-full aspect-square text-xs font-bold rounded-lg flex items-center justify-center transition bg-rose-500 text-white shadow-sm';
+        }
+      }
+
+      document.getElementById('answered-count').innerText = Object.keys(userAnswers).length;
+      renderCurrentQuestion();
+    }
+
+    function updateScoreDisplay() {
+      let correctCount = 0;
+      Object.keys(userAnswers).forEach(idx => {
+        if (userAnswers[idx] === currentQuestions[idx].correct) {
+          correctCount++;
+        }
+      });
+      const score = ((correctCount / currentQuestions.length) * 10).toFixed(1);
+      document.getElementById('score-display').innerText = score;
+    }
+
+    function renderNavigationGrid() {
+      const grid = document.getElementById('question-grid');
+      grid.innerHTML = '';
+
+      currentQuestions.forEach((_, idx) => {
+        const btn = document.createElement('button');
+        btn.id = `grid-btn-${idx}`;
+        btn.type = 'button';
+        btn.innerText = idx + 1;
+        btn.className = 'w-full aspect-square text-xs font-bold rounded-lg flex items-center justify-center transition bg-slate-100 hover:bg-indigo-50 text-slate-700 border border-slate-200';
+
+        btn.onclick = () => {
+          currentIndex = idx;
+          renderCurrentQuestion();
+          highlightCurrentGrid();
+        };
+
+        grid.appendChild(btn);
+      });
+      highlightCurrentGrid();
+    }
+
+    function highlightCurrentGrid() {
+      currentQuestions.forEach((_, idx) => {
+        const btn = document.getElementById(`grid-btn-${idx}`);
+        if (!btn) return;
+
+        // Border highlighting for current position
+        if (idx === currentIndex) {
+          btn.classList.add('ring-2', 'ring-indigo-600', 'ring-offset-1');
+        } else {
+          btn.classList.remove('ring-2', 'ring-indigo-600', 'ring-offset-1');
+        }
+      });
+    }
+
+    function prevQuestion() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderCurrentQuestion();
+        highlightCurrentGrid();
+      }
+    }
+
+    function nextQuestion() {
+      if (currentIndex < currentQuestions.length - 1) {
+        currentIndex++;
+        renderCurrentQuestion();
+        highlightCurrentGrid();
+      } else {
+        finishQuizEarly();
+      }
+    }
+
+    function toggleBookmarkCurrent() {
+      if (bookmarks.has(currentIndex)) {
+        bookmarks.delete(currentIndex);
+      } else {
+        bookmarks.add(currentIndex);
+      }
+      updateBookmarkIcon();
+    }
+
+    function updateBookmarkIcon() {
+      const btn = document.getElementById('bookmark-btn');
+      if (bookmarks.has(currentIndex)) {
+        btn.className = 'text-amber-500 font-medium text-sm transition';
+        btn.innerHTML = '<i class="fa-solid fa-bookmark mr-1"></i> <span class="hidden sm:inline">Đã ghi nhớ</span>';
+      } else {
+        btn.className = 'text-slate-400 hover:text-amber-500 text-sm transition';
+        btn.innerHTML = '<i class="fa-regular fa-bookmark mr-1"></i> <span class="hidden sm:inline">Ghi nhớ</span>';
+      }
+    }
+
+    function finishQuizEarly() {
+      const total = currentQuestions.length;
+      const answered = Object.keys(userAnswers).length;
+
+      if (answered < total) {
+        const confirmEnd = confirm(`Bạn mới trả lời ${answered}/${total} câu hỏi. Bạn có chắc chắn muốn nộp bài sớm không?`);
+        if (!confirmEnd) return;
+      }
+
+      clearInterval(timerInterval);
+
+      // Tính toán kết quả
+      let correctCount = 0;
+      Object.keys(userAnswers).forEach(idx => {
+        if (userAnswers[idx] === currentQuestions[idx].correct) {
+          correctCount++;
+        }
+      });
+
+      const wrongCount = total - correctCount;
+      const score = ((correctCount / total) * 10).toFixed(1);
+
+      document.getElementById('res-score').innerText = score;
+      document.getElementById('res-correct').innerText = correctCount;
+      document.getElementById('res-wrong').innerText = wrongCount;
+      document.getElementById('res-time').innerText = formatTime(secondsElapsed);
+
+      const iconBox = document.getElementById('result-icon-container');
+      const evalText = document.getElementById('result-evaluation');
+
+      if (score >= 9.0) {
+        iconBox.className = 'w-20 h-20 mx-auto rounded-full flex items-center justify-center text-4xl mb-4 bg-emerald-100 text-emerald-600';
+        iconBox.innerHTML = '<i class="fa-solid fa-trophy"></i>';
+        evalText.innerText = "Xuất sắc! Em đã nắm rất vững kiến thức Lịch sử 11 giữa HK1, sẵn sàng đạt điểm 10 trong kỳ thi thật!";
+      } else if (score >= 7.0) {
+        iconBox.className = 'w-20 h-20 mx-auto rounded-full flex items-center justify-center text-4xl mb-4 bg-indigo-100 text-indigo-600';
+        iconBox.innerHTML = '<i class="fa-solid fa-award"></i>';
+        evalText.innerText = "Khá tốt! Em đã nắm được hầu hết các khái niệm và sự kiện chính. Hãy xem lại các câu sai để bứt phá điểm tối đa!";
+      } else if (score >= 5.0) {
+        iconBox.className = 'w-20 h-20 mx-auto rounded-full flex items-center justify-center text-4xl mb-4 bg-amber-100 text-amber-600';
+        iconBox.innerHTML = '<i class="fa-solid fa-medal"></i>';
+        evalText.innerText = "Đạt yêu cầu cơ bản. Cần chú ý thêm tiền đề, tính chất và các hình thức tổ chức độc quyền của CNTB.";
+      } else {
+        iconBox.className = 'w-20 h-20 mx-auto rounded-full flex items-center justify-center text-4xl mb-4 bg-rose-100 text-rose-600';
+        iconBox.innerHTML = '<i class="fa-solid fa-book-open-reader"></i>';
+        evalText.innerText = "Em cần ôn tập lại bài học kỹ hơn trong SGK Lịch sử 11 và làm lại lượt mới để ghi nhớ bài tốt hơn nhé!";
+      }
+
+      document.getElementById('quiz-screen').classList.add('hidden');
+      document.getElementById('result-screen').classList.remove('hidden');
+    }
+
+    function reviewAnswers() {
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('quiz-screen').classList.remove('hidden');
+      currentIndex = 0;
+      renderCurrentQuestion();
+      highlightCurrentGrid();
+    }
+
+    function restartQuizWithShuffle() {
+      startQuiz();
+    }
+  </script>
+</body>
+</html>
+```eof
